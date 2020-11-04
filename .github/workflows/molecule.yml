@@ -29,11 +29,7 @@ jobs:
         image:
           - geerlingguy/docker-ubuntu2004-ansible:latest
           - geerlingguy/docker-ubuntu1804-ansible:latest
-          # @TODO enable the rest after these first 2 work ^
-          # - geerlingguy/docker-ubuntu1604-ansible:latest
-          # - geerlingguy/docker-centos7-ansible:latest
-          # - geerlingguy/docker-centos8-ansible:latest
-          # - geerlingguy/docker-amazonlinux2-ansible:latest
+          - geerlingguy/docker-ubuntu1604-ansible:latest
     steps:
       - name: checkout
         uses: actions/checkout@v2
