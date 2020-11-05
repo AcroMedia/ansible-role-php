@@ -23,7 +23,7 @@ jobs:
   test:
     needs:
       - lint
-    runs-on: ubuntu-latest
+    runs-on: ${{ matrix.image }}
     strategy:
       matrix:
         image:
