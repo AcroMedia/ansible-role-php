@@ -1,11 +1,17 @@
 ---
+- set_fact:
+    _supported_ubuntu_versions:
+      - '14.04'
+      - '16.04'
+      - '18.04'
+      - '20.04'
+
 - name: Check if OS is Ubuntu LTS
-  fail: msg="Server must be Ubuntu LTS"
-  when: ansible_distribution != 'Ubuntu'
-    or (ansible_distribution_version != '14.04'
-      and ansible_distribution_version != '16.04'
-      and ansible_distribution_version != '18.04'
-      and ansible_distribution_version != '20.04')
+  assert:
+    that:
+      - ansible_distribution == 'Ubuntu'
+      - ansible_distribution_version in _supported_ubuntu_versions
+    fail_msg: Server must be Ubuntu LTS
 
 - name: Add ondrej repo to allow multiple PHP versions
   apt_repository:
