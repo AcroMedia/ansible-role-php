@@ -34,7 +34,7 @@
   tags:
     - acroutils
 
-- name: Set default PHP version to {{ php_default_version }} (acro-add-website.sh)
+- name: Let acro-add-website.sh know which PHP version ({{ php_default_version }}) to use
   file:
     state: link
     src: /etc/acro/add-website.conf.php{{ php_default_version }}
@@ -45,7 +45,7 @@
   tags:
     - acroutils
 
-- name: Get default PHP version
+- name: Determine the current default PHP CLI version
   shell: |
     set -o pipefail
     /usr/bin/php -v | grep 'PHP '
@@ -55,35 +55,35 @@
   failed_when: false
   changed_when: false
 
-- name: Set default PHP version to 5.6 (PHP CLI)
+- name: Change default PHP version to 5.6 (PHP CLI)
   shell: update-alternatives --set php /usr/bin/php{{ php_default_version }}
   when: php_default_version == 5.6
     and php_installed_default_version is defined
     and php_installed_default_version.stdout is defined
     and (not php_installed_default_version.stdout | regex_search("PHP 5\.6"))
 
-- name: Set default PHP version to 7.0 (PHP CLI)
+- name: Change default PHP version to 7.0 (PHP CLI)
   shell: update-alternatives --set php /usr/bin/php{{ php_default_version }}
   when: php_default_version == 7.0
     and php_installed_default_version is defined
     and php_installed_default_version.stdout is defined
     and (not php_installed_default_version.stdout | regex_search("PHP 7\.0"))
 
-- name: Set default PHP version to 7.1 (PHP CLI)
+- name: Change default PHP version to 7.1 (PHP CLI)
   shell: update-alternatives --set php /usr/bin/php{{ php_default_version }}
   when: php_default_version == 7.1
     and php_installed_default_version is defined
     and php_installed_default_version.stdout is defined
     and (not php_installed_default_version.stdout | regex_search("PHP 7\.1"))
 
-- name: Set default PHP version to 7.2 (PHP CLI)
+- name: Change default PHP version to 7.2 (PHP CLI)
   shell: update-alternatives --set php /usr/bin/php{{ php_default_version }}
   when: php_default_version == 7.2
     and php_installed_default_version is defined
     and php_installed_default_version.stdout is defined
     and (not php_installed_default_version.stdout | regex_search("PHP 7\.2"))
 
-- name: Set default PHP version to 7.3 (PHP CLI)
+- name: Change default PHP version to 7.3 (PHP CLI)
   shell: update-alternatives --set php /usr/bin/php{{ php_default_version }}
   when: php_default_version == 7.3
     and php_installed_default_version is defined
