@@ -23,3 +23,5 @@ lint: |
   set -e
   yamllint -d relaxed .
 #  ansible-lint .   @TODO uncomment and address issues, which are out of scope for this feature branch.
+scenario:
+  name: php7.2

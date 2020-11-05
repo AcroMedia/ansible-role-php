@@ -19,3 +19,5 @@ provisioner:
     converge: ${MOLECULE_PLAYBOOK:-converge.yml}
 verifier:
   name: ansible
+scenario:
+  name: default
