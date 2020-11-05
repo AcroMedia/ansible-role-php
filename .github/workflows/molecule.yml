@@ -33,6 +33,8 @@ jobs:
           - geerlingguy/docker-ubuntu1604-ansible:latest
         scenario:
           - default
+          - php7.1
+          - php7.2
           - php7.3
     steps:
       - name: checkout
