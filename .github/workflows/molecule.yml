@@ -23,13 +23,9 @@ jobs:
   test:
     needs:
       - lint
-    runs-on: ${{ matrix.image }}
+    runs-on: ubuntu-latest
     strategy:
       matrix:
-        image:
-          - geerlingguy/docker-ubuntu2004-ansible:latest
-          - geerlingguy/docker-ubuntu1804-ansible:latest
-          - geerlingguy/docker-ubuntu1604-ansible:latest
         scenario:
           - php7.1
           - php7.2
@@ -43,6 +39,5 @@ jobs:
       - name: molecule
         uses: robertdebock/molecule-action@2.6.3
         with:
-          image: "${{ matrix.image }}"
           options: parallel
           scenario: "${{ matrix.scenario }}"
