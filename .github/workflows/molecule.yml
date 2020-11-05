@@ -30,6 +30,11 @@ jobs:
           - geerlingguy/docker-ubuntu2004-ansible:latest
           - geerlingguy/docker-ubuntu1804-ansible:latest
           - geerlingguy/docker-ubuntu1604-ansible:latest
+        scenario:
+          - php7.1
+          - php7.2
+          - php7.3
+          - php7.4
     steps:
       - name: checkout
         uses: actions/checkout@v2
@@ -40,28 +45,4 @@ jobs:
         with:
           image: "${{ matrix.image }}"
           options: parallel
-          scenario: php7.4
-      - name: molecule
-        uses: robertdebock/molecule-action@2.6.3
-        with:
-          image: "${{ matrix.image }}"
-          options: parallel
-          scenario: php7.3
-      - name: molecule
-        uses: robertdebock/molecule-action@2.6.3
-        with:
-          image: "${{ matrix.image }}"
-          options: parallel
-          scenario: php7.2
-      - name: molecule
-        uses: robertdebock/molecule-action@2.6.3
-        with:
-          image: "${{ matrix.image }}"
-          options: parallel
-          scenario: php7.2
-      - name: molecule
-        uses: robertdebock/molecule-action@2.6.3
-        with:
-          image: "${{ matrix.image }}"
-          options: parallel
-          scenario: php7.1
+          scenario: "${{ matrix.scenario }}"
