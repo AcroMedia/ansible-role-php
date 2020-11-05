@@ -13,6 +13,11 @@
       - ansible_distribution_version in _supported_ubuntu_versions
     fail_msg: Server must be Ubuntu LTS
 
+- name: Make sure dirmngr is present so gnupg doesn't choke when we try to add Ondrej PHP PPA
+  apt:
+    name: dirmngr
+    state: present
+
 - name: Add ondrej repo to allow multiple PHP versions
   apt_repository:
     repo: "ppa:ondrej/php"
