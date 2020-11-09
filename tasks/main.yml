@@ -1,11 +1,22 @@
 ---
+- set_fact:
+    _supported_ubuntu_versions:
+      - '14.04'
+      - '16.04'
+      - '18.04'
+      - '20.04'
+
 - name: Check if OS is Ubuntu LTS
-  fail: msg="Server must be Ubuntu LTS"
-  when: ansible_distribution != 'Ubuntu'
-    or (ansible_distribution_version != '14.04'
-      and ansible_distribution_version != '16.04'
-      and ansible_distribution_version != '18.04'
-      and ansible_distribution_version != '20.04')
+  assert:
+    that:
+      - ansible_distribution == 'Ubuntu'
+      - ansible_distribution_version in _supported_ubuntu_versions
+    fail_msg: Server must be Ubuntu LTS
+
+- name: Make sure dirmngr is present so gnupg doesn't choke when we try to add Ondrej PHP PPA
+  apt:
+    name: dirmngr
+    state: present
 
 - name: Add ondrej repo to allow multiple PHP versions
   apt_repository:
@@ -23,54 +34,65 @@
   tags:
     - acroutils
 
-- name: Set default PHP version to {{ php_default_version }} (acro-add-website.sh)
+- name: Let acro-add-website.sh know which PHP version ({{ php_default_version }}) to use
   file:
     state: link
     src: /etc/acro/add-website.conf.php{{ php_default_version }}
     dest: /etc/acro/add-website.conf
   when: add_website_conf is defined
     and add_website_conf.stat is defined
-    and add_website_conf.stat.exists == true
+    and add_website_conf.stat.exists
   tags:
     - acroutils
 
-- name: Get default PHP version
-  shell: /usr/bin/php -v | grep 'PHP '
+- name: Determine the current default PHP CLI version
+  shell: |
+    set -o pipefail
+    /usr/bin/php -v | grep 'PHP '
+  args:
+    executable: /bin/bash
   register: php_installed_default_version
   failed_when: false
   changed_when: false
 
-- name: Set default PHP version to 5.6 (PHP CLI)
+- name: Change default PHP version to 5.6 (PHP CLI)
   shell: update-alternatives --set php /usr/bin/php{{ php_default_version }}
   when: php_default_version == 5.6
     and php_installed_default_version is defined
     and php_installed_default_version.stdout is defined
     and (not php_installed_default_version.stdout | regex_search("PHP 5\.6"))
 
-- name: Set default PHP version to 7.0 (PHP CLI)
+- name: Change default PHP version to 7.0 (PHP CLI)
   shell: update-alternatives --set php /usr/bin/php{{ php_default_version }}
   when: php_default_version == 7.0
     and php_installed_default_version is defined
     and php_installed_default_version.stdout is defined
     and (not php_installed_default_version.stdout | regex_search("PHP 7\.0"))
 
-- name: Set default PHP version to 7.1 (PHP CLI)
+- name: Change default PHP version to 7.1 (PHP CLI)
   shell: update-alternatives --set php /usr/bin/php{{ php_default_version }}
   when: php_default_version == 7.1
     and php_installed_default_version is defined
     and php_installed_default_version.stdout is defined
     and (not php_installed_default_version.stdout | regex_search("PHP 7\.1"))
 
-- name: Set default PHP version to 7.2 (PHP CLI)
+- name: Change default PHP version to 7.2 (PHP CLI)
   shell: update-alternatives --set php /usr/bin/php{{ php_default_version }}
   when: php_default_version == 7.2
     and php_installed_default_version is defined
     and php_installed_default_version.stdout is defined
     and (not php_installed_default_version.stdout | regex_search("PHP 7\.2"))
 
-- name: Set default PHP version to 7.3 (PHP CLI)
+- name: Change default PHP version to 7.3 (PHP CLI)
   shell: update-alternatives --set php /usr/bin/php{{ php_default_version }}
   when: php_default_version == 7.3
     and php_installed_default_version is defined
     and php_installed_default_version.stdout is defined
     and (not php_installed_default_version.stdout | regex_search("PHP 7\.3"))
+
+- name: Change default PHP version to 7.4 (PHP CLI)
+  shell: update-alternatives --set php /usr/bin/php{{ php_default_version }}
+  when: php_default_version == 7.4
+    and php_installed_default_version is defined
+    and php_installed_default_version.stdout is defined
+    and (not php_installed_default_version.stdout | regex_search("PHP 7\.4"))
