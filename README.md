@@ -1,10 +1,10 @@
 # Ansible role: PHP
 
-Install and configure PHP for use with Drupal sites in Acro hosting environments (NGINX + FPM).
+Install and configure PHP, typically for use with Drupal sites in Acro Media NGINX + FPM hosting environments.
 
 ## Requirements
 
-* Ubuntu LTS (14.04 or newer)
+* Ubuntu LTS (16.04 or newer)
 
 ## Role Variables
 
@@ -19,20 +19,24 @@ Install and configure PHP for use with Drupal sites in Acro hosting environments
 None
 
 ## Example Playbook
-
-    - hosts: servers
-    - name: Install + Configure PHP
-      role: acromedia.php
-      php_default_version: 7.1
-      php_versions:
-        - 5.6
-        - 7.0
-        - 7.1
-        - 7.2
-      php71_add_modules:
-        - php7.1-extra-thingy
+```yaml
+- name: Install + Configure PHP
+  hosts: servers
+  gather_facts: yes
+  become: yes
+  vars:
+    php_default_version: 7.4
+    php_versions:
+      - 7.2
+      - 7.3
+      - 7.4
+    php74_add_modules:
+      - php7.4-extra-thingy
+  roles:
+    - role: acromedia.php
       tags:
         - php
+```
 
 ## License
 
