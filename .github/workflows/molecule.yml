@@ -41,3 +41,5 @@ jobs:
         with:
           options: parallel
           scenario: "${{ matrix.scenario }}"
+        env:
+          MOLECULE_DOCKER_IMAGE: "${{ matrix.image }}"
