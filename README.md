@@ -1,6 +1,10 @@
 # Ansible role: PHP
 
+![.github/workflows/molecule.yml](https://github.com/AcroMedia/ansible-role-php/workflows/.github/workflows/molecule.yml/badge.svg)
+
 Install and configure PHP, typically for use with Drupal sites in Acro Media NGINX + FPM hosting environments.
+
+
 
 ## Requirements
 
