@@ -11,6 +11,7 @@
     dest: /etc/php/7.4/fpm/php.ini
     regexp: '^(.*)cgi.fix_pathinfo='
     line: cgi.fix_pathinfo=0
+  when: "'php7.4-fpm' in php74_modules"
   notify:
     - restart php7.4-fpm
 
@@ -19,6 +20,7 @@
     dest: /etc/php/7.4/fpm/php.ini
     regexp: '^(.*)memory_limit(.*)=(.*)'
     line: 'memory_limit = {{ php_memory_limit }}'
+  when: "'php7.4-fpm' in php74_modules"
   notify:
     - restart php7.4-fpm
 
@@ -27,8 +29,10 @@
     dest: /etc/php/7.4/fpm/php.ini
     regexp: '^(.*)max_input_vars(.*)=(.*)'
     line: 'max_input_vars = {{ php_max_input_vars }}'
+  when: "'php7.4-fpm' in php74_modules"
   notify:
     - restart php7.4-fpm
 
 - name: Ensure php7.4-fpm is started.
   service: name=php7.4-fpm state=started
+  when: "'php7.4-fpm' in php74_modules"
