@@ -1,4 +1,4 @@
-php_default_version: 7.2
+php_default_version: 8.0
 php_memory_limit: 256M
 php_max_input_vars: 3001
 
@@ -124,3 +124,23 @@ php74_modules_default:
     - php7.4-zip
 php74_add_modules: []
 php74_modules: "{{ php74_modules_default + php74_add_modules }}"
+
+php80_modules_default:
+    - php8.0-common
+    - php8.0-bcmath
+    - php8.0-curl
+    - php8.0-fpm
+    - php8.0-gd
+    - php8.0-igbinary
+    - php8.0-mbstring
+    - php8.0-mysql
+    - php8.0-pgsql
+    - php8.0-oauth
+    - php8.0-opcache
+    - php8.0-redis
+    - php8.0-soap
+    - php8.0-xml
+    - php8.0-xmlrpc
+    - php8.0-zip
+php80_add_modules: []
+php80_modules: "{{ php80_modules_default + php80_add_modules }}"

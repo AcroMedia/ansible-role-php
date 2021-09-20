@@ -27,14 +27,12 @@ jobs:
     strategy:
       matrix:
         scenario:
-          - php7.1
-          - php7.2
           - php7.3
           - php7.4
+          - php8.0
         image:
           - geerlingguy/docker-ubuntu2004-ansible:latest
           - geerlingguy/docker-ubuntu1804-ansible:latest
-          - geerlingguy/docker-ubuntu1604-ansible:latest
     steps:
       - name: checkout
         uses: actions/checkout@v2
