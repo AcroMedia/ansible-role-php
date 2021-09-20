@@ -1,0 +1,38 @@
+---
+- name: Install PHP 8.0 modules
+# Note: Some of the package names fail check mode if the Ondrej repo hasn't yet been installed.
+  apt:
+    name: "{{ php80_modules }}"
+    update_cache: yes
+    state: present
+
+- name: ensure php8.0-fpm cgi.fix_pathinfo=0
+  lineinfile:
+    dest: /etc/php/8.0/fpm/php.ini
+    regexp: '^(.*)cgi.fix_pathinfo='
+    line: cgi.fix_pathinfo=0
+  when: "'php8.0-fpm' in php80_modules"
+  notify:
+    - restart php8.0-fpm
+
+- name: increase php8.0-fpm memory_limit
+  lineinfile:
+    dest: /etc/php/8.0/fpm/php.ini
+    regexp: '^(.*)memory_limit(.*)=(.*)'
+    line: 'memory_limit = {{ php_memory_limit }}'
+  when: "'php8.0-fpm' in php80_modules"
+  notify:
+    - restart php8.0-fpm
+
+- name: increase php8.0-fpm max_input_vars
+  lineinfile:
+    dest: /etc/php/8.0/fpm/php.ini
+    regexp: '^(.*)max_input_vars(.*)=(.*)'
+    line: 'max_input_vars = {{ php_max_input_vars }}'
+  when: "'php8.0-fpm' in php80_modules"
+  notify:
+    - restart php8.0-fpm
+
+- name: Ensure php8.0-fpm is started.
+  service: name=php8.0-fpm state=started
+  when: "'php8.0-fpm' in php80_modules"

@@ -29,13 +29,13 @@ None
   gather_facts: yes
   become: yes
   vars:
-    php_default_version: 7.4
+    php_default_version: 8.0
     php_versions:
       - 7.2
       - 7.3
-      - 7.4
+      - 8.0
     php74_add_modules:
-      - php7.4-extra-thingy
+      - php8.0-extra-thingy
   roles:
     - role: acromedia.php
       tags:
