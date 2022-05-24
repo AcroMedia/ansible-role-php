@@ -8,7 +8,7 @@ Install and configure PHP, typically for use with Drupal sites in Acro Media NGI
 
 ## Requirements
 
-* Ubuntu LTS (16.04 or newer)
+* Ubuntu LTS (18.04 or newer)
 
 ## Role Variables
 
