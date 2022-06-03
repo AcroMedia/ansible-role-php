@@ -187,6 +187,7 @@ php80_modules: "{{ php80_modules_default + php80_add_modules }}"
 php_default_module_name_suffixes:
     - common
     - bcmath
+    - cli
     - curl
     - fpm
     - gd
