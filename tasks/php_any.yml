@@ -3,6 +3,16 @@
   set_fact:
     php_module_name_prefix: "{{ 'php' + (php_version|string) + '-' }}"
 
+- name: Debug php_default_module_name_suffixes
+  debug:
+    var: php_default_module_name_suffixes
+#    verbosity: 1
+
+- name: Debug php_module_name_prefix
+  debug:
+    var: php_module_name_prefix
+#    verbosity: 1
+
 - name: Set php_modules_default list
   set_fact:
     php_modules_default: "{{ [php_module_name_prefix] | product(php_default_module_name_suffixes) | map('join') }}"
