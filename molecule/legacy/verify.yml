@@ -1,0 +1,10 @@
+---
+- name: Check php is configured
+  hosts: all
+  become: yes
+  vars_files: ./vars.yml
+
+  tasks:
+    - name: Confirm PHP configuration is correct.
+      shell: php -v | grep '{{ php_default_version }}'
+      changed_when: false

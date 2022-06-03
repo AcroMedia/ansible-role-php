@@ -46,6 +46,12 @@ Install and configure PHP, typically for use with Drupal sites in Acro Media NGI
 * Not defined by default, so the role can define it and populated it, based on the combination of `php_versions` and `php_default_module_name_suffixes` (see [defaults/main.yml](defaults/main.yml))
 * If you define this var in your playbook, your var will **completely override the ENTIRE list of ALL modules, for ANY PHP >= 8.1 version** that the role would normally install. E.g. If you have multiple versions of php installed, you'll need to specify all modules for every version yourself.
 
+#### `php_use_legacy_module_lists`
+* Defaults to `true`
+* For compatibility with older playbooks that have been using the role, and have custom module specifications.
+* Setting this to `false` will let the role the use 8.1-style package name generator for all (older) php versions, as well as 8.1 and beyond.
+* If your role doesn't use any version specific lists (see defaults/main.yml), then it's safe to set this to `false`.
+
 
 ## Dependencies
 
@@ -69,6 +75,7 @@ None
       - php8.0-foo
       - php8.1-foo
       - php8.1-bar
+    # php_use_legacy_module_lists: ... See variable documentation.
   roles:
     - role: acromedia.php
       tags:

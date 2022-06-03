@@ -29,14 +29,14 @@
 
 - name: Include php version specific playbook (< 8.1)
   include_tasks: "php{{ item }}.yml"
-  when: item is version(8.1, '<')
+  when: item is version(8.1, '<') and php_use_legacy_module_lists
   with_items: "{{ php_versions }}"
 
 - name: Include php version agnostic playbook (>= 8.1)
   include_tasks: "php_any.yml"
   vars:
     php_version: "{{ item }}"
-  when: item is version(8.1, '>=')
+  when: item is version(8.1, '>=') or not php_use_legacy_module_lists
   with_items: "{{ php_versions }}"
 
 - name: Check for existence of /etc/acro/add-website.conf

@@ -203,3 +203,4 @@ php_default_module_name_suffixes:
     - zip
 php_add_modules: []
 ## php_modules: []  # Intentionally commented out.
+php_use_legacy_module_lists: true
