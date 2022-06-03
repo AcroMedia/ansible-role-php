@@ -29,17 +29,17 @@
 
 - name: Accept the list of modules to install when it is defined from the playbook.
   set_fact:
-    _php_modules: "{{ (php_modules|list) }}"
+    __loop_php_modules: "{{ (php_modules|list) }}"
   when: php_modules is defined
 
 - name: Auto populate list of php modules to install when the list has not been explicitly specified (This is the default)
   set_fact:
-    _php_modules: "{{ (php_modules_default|list) + (php_add_modules|list) }}"
+    __loop_php_modules: "{{ (php_modules_default|list) + (php_add_modules|list) }}"
   when: php_modules is not defined
 
 - name: Install PHP {{ php_version }} modules. This task will fail check mode if ondrej repo has not been added yet.
   apt:
-    name: "{{ _php_modules }}"
+    name: "{{ __loop_php_modules }}"
     update_cache: yes
     state: present
 
@@ -49,7 +49,7 @@
     regexp: '^(.*)cgi.fix_pathinfo='
     line: cgi.fix_pathinfo=0
   when: >
-    'php{{ php_version }}-fpm' in php_modules
+    'php{{ php_version }}-fpm' in __loop_php_modules
   notify:
     - restart php-fpm
 
@@ -59,7 +59,7 @@
     regexp: '^(.*)memory_limit(.*)=(.*)'
     line: 'memory_limit = {{ php_memory_limit }}'
   when: >
-    'php{{ php_version }}-fpm' in php_modules
+    'php{{ php_version }}-fpm' in __loop_php_modules
   notify:
     - restart php-fpm
 
@@ -69,7 +69,7 @@
     regexp: '^(.*)max_input_vars(.*)=(.*)'
     line: 'max_input_vars = {{ php_max_input_vars }}'
   when: >
-    'php{{ php_version }}-fpm' in php_modules
+    'php{{ php_version }}-fpm' in __loop_php_modules
   notify:
     - restart php-fpm
 
@@ -79,4 +79,4 @@
     state: started
     enabled: yes
   when: >
-    'php{{ php_version }}-fpm' in php_modules
+    'php{{ php_version }}-fpm' in __loop_php_modules
