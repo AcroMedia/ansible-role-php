@@ -27,10 +27,9 @@ jobs:
     strategy:
       matrix:
         scenario:
-          - php7.3
           - php7.4
           - php8.0
-          - php8.1
+          - default   # default == PHP 8.1 as of this comment.
         image:
           - geerlingguy/docker-ubuntu2204-ansible:latest
           - geerlingguy/docker-ubuntu2004-ansible:latest
