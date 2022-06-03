@@ -15,7 +15,7 @@
 
 - name: Set php_modules_default list
   set_fact:
-    php_modules_default: "{{ [php_module_name_prefix] | product(php_default_module_name_suffixes|list) | map('join')  }}"
+    php_modules_default: "{{ [php_module_name_prefix] | product(php_default_module_name_suffixes|list) | map('join') | list  }}"
 
 - name: Debug php_modules_default
   debug:
