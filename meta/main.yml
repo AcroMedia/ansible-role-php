@@ -4,6 +4,8 @@ galaxy_info:
   description: Install PHP FPM on Ubuntu LTS (14.04 or newer)
   company: Acro Media Inc.
   license: GPLv3
+  namespace: acromedia
+  role_name: php
 
   min_ansible_version: 2.3
   platforms:

@@ -1,0 +1,82 @@
+---
+- name: Set php_module_name_prefix string
+  set_fact:
+    php_module_name_prefix: "{{ 'php' + (php_version|string) + '-' }}"
+
+- name: Debug php_default_module_name_suffixes
+  debug:
+    var: php_default_module_name_suffixes
+#    verbosity: 1
+
+- name: Debug php_module_name_prefix
+  debug:
+    var: php_module_name_prefix
+#    verbosity: 1
+
+- name: Set php_modules_default list
+  set_fact:
+    php_modules_default: "{{ [php_module_name_prefix] | product(php_default_module_name_suffixes|list) | map('join') | list  }}"
+
+- name: Debug php_modules_default
+  debug:
+    var: php_modules_default
+#    verbosity: 1
+
+- name: Debug php_add_modules
+  debug:
+    var: php_add_modules
+#    verbosity: 1
+
+- name: Accept the list of modules to install when it is defined from the playbook.
+  set_fact:
+    __loop_php_modules: "{{ (php_modules|list) }}"
+  when: php_modules is defined
+
+- name: Auto populate list of php modules to install when the list has not been explicitly specified (This is the default)
+  set_fact:
+    __loop_php_modules: "{{ (php_modules_default|list) + (php_add_modules|list) }}"
+  when: php_modules is not defined
+
+- name: Install PHP {{ php_version }} modules. This task will fail check mode if ondrej repo has not been added yet.
+  apt:
+    name: "{{ __loop_php_modules }}"
+    update_cache: yes
+    state: present
+
+- name: ensure php{{ php_version }}-fpm cgi.fix_pathinfo=0
+  lineinfile:
+    dest: /etc/php/{{ php_version }}/fpm/php.ini
+    regexp: '^(.*)cgi.fix_pathinfo='
+    line: cgi.fix_pathinfo=0
+  when: >
+    'php{{ php_version }}-fpm' in __loop_php_modules
+  notify:
+    - restart php-fpm
+
+- name: increase php{{ php_version }}-fpm memory_limit
+  lineinfile:
+    dest: /etc/php/{{ php_version }}/fpm/php.ini
+    regexp: '^(.*)memory_limit(.*)=(.*)'
+    line: 'memory_limit = {{ php_memory_limit }}'
+  when: >
+    'php{{ php_version }}-fpm' in __loop_php_modules
+  notify:
+    - restart php-fpm
+
+- name: increase php{{ php_version }}-fpm max_input_vars
+  lineinfile:
+    dest: /etc/php/{{ php_version }}/fpm/php.ini
+    regexp: '^(.*)max_input_vars(.*)=(.*)'
+    line: 'max_input_vars = {{ php_max_input_vars }}'
+  when: >
+    'php{{ php_version }}-fpm' in __loop_php_modules
+  notify:
+    - restart php-fpm
+
+- name: Ensure php{{ php_version }}-fpm is started.
+  service:
+    name: php{{ php_version }}-fpm
+    state: started
+    enabled: yes
+  when: >
+    'php{{ php_version }}-fpm' in __loop_php_modules

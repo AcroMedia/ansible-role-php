@@ -5,22 +5,58 @@
 Install and configure PHP, typically for use with Drupal sites in Acro Media NGINX + FPM hosting environments.
 
 
-
 ## Requirements
 
 * Ubuntu LTS (18.04 or newer)
 
+
 ## Role Variables
 
-* php_default_version: The default CLI version of php for the server
-* php_memory_limit: The maximum memory limit
-* php_max_input_vars: The maximum input vars
-* php_versions: A list of versions to install
-* phpXX_add_modules: A list of extra apt packages not already included in the [default list](./defaults/main.yml), where XX corresponds to the PHP version(s) you're installing.
+#### `php_default_version`
+  * The default CLI version of php to set on the server.
+  * Defaults to `8.1`
+
+#### `php_memory_limit`
+* The default maximum memory limit
+* Applies to all php versions installed
+* Defaults to `256M`.
+
+#### `php_max_input_vars`
+* The maximum number of input vars that can be accepted in a POST request
+* Drupal typically needs this way higher than the default
+* Applies to all php versions installed
+* Defaults to `3001`.
+
+#### `php_versions`
+* A list of versions to install.
+* Defaults to `[ {{php_default_version}} ]`.
+
+### For PHP 8.0 and before:
+
+* See [defaults/main.yml](defaults/main.yml) - Up to and including PHP 8.0, the add_modules and default modules list were version-specific variables.
+
+### For PHP 8.1 and later:
+
+#### `php_add_modules`
+* A list of extra apt packages not already included in the default list. See [defaults/main.yml](defaults/main.yml).
+* The modules you specify must be the full name of the apt package to install. (See example playbook below)
+* Defaults to an empty list. `[]`
+
+#### `php_modules`
+* Not defined by default, so the role can define it and populated it, based on the combination of `php_versions` and `php_default_module_name_suffixes` (see [defaults/main.yml](defaults/main.yml))
+* If you define this var in your playbook, your var will **completely override the ENTIRE list of ALL modules, for ANY PHP >= 8.1 version** that the role would normally install. E.g. If you have multiple versions of php installed, you'll need to specify all modules for every version yourself.
+
+#### `php_use_legacy_module_lists`
+* Defaults to `true`
+* For compatibility with older playbooks that have been using the role, and have custom module specifications.
+* Setting this to `false` will let the role the use 8.1-style package name generator for all (older) php versions, as well as 8.1 and beyond.
+* If your role doesn't use any version specific lists (see defaults/main.yml), then it's safe to set this to `false`.
+
 
 ## Dependencies
 
 None
+
 
 ## Example Playbook
 ```yaml
@@ -29,13 +65,17 @@ None
   gather_facts: yes
   become: yes
   vars:
-    php_default_version: 8.0
+    php_default_version: '8.1'
     php_versions:
-      - 7.2
-      - 7.3
-      - 8.0
-    php74_add_modules:
-      - php8.0-extra-thingy
+      - '7.4'
+      - '8.0'
+      - '8.1'
+    php_add_modules:
+      - php7.4-foo
+      - php8.0-foo
+      - php8.1-foo
+      - php8.1-bar
+    # php_use_legacy_module_lists: ... See variable documentation.
   roles:
     - role: acromedia.php
       tags:
@@ -45,6 +85,7 @@ None
 ## License
 
 GPLv3
+
 
 ## Author Information
 
