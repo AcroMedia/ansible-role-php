@@ -1,9 +1,0 @@
----
-- name: Check php is configured
-  hosts: all
-  become: yes
-
-  tasks:
-    - name: Confirm PHP configuration is correct.
-      shell: php -v | grep '7.2'
-      changed_when: false
