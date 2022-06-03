@@ -29,8 +29,8 @@ jobs:
         scenario:
           - php7.4
           - php8.0
-          - default   # Only uses 8.1 style lists for all php versions
-          - legacy  # Mixes new 8.1 style list and keeps pre-8.1 module lists.
+          - php81modern   # Only uses 8.1 style lists for all php versions
+          - php81legacy  # Mixes new 8.1 style list and keeps pre-8.1 module lists.
         image:
           - geerlingguy/docker-ubuntu2204-ansible:latest
           - geerlingguy/docker-ubuntu2004-ansible:latest
