@@ -20,4 +20,4 @@ provisioner:
 verifier:
   name: ansible
 scenario:
-  name: default
+  name: php81legacy
