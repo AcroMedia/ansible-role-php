@@ -10,7 +10,12 @@
 - name: Debug php_modules_default
   debug:
     var: php_modules_default
-    verbosity: 1
+#    verbosity: 1
+
+- name: Debug php_add_modules
+  debug:
+    var: php_add_modules
+#    verbosity: 1
 
 - name: Auto populate php_modules list
   set_fact:
