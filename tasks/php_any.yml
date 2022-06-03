@@ -27,14 +27,19 @@
     var: php_add_modules
 #    verbosity: 1
 
-- name: Auto populate php_modules list
+- name: Accept the list of modules to install when it is defined from the playbook.
   set_fact:
-    php_modules: "{{ (php_modules_default|list) + (php_add_modules|list) }}"
+    _php_modules: "{{ (php_modules|list) }}"
+  when: php_modules is defined
+
+- name: Auto populate list of php modules to install when the list has not been explicitly specified (This is the default)
+  set_fact:
+    _php_modules: "{{ (php_modules_default|list) + (php_add_modules|list) }}"
   when: php_modules is not defined
 
 - name: Install PHP {{ php_version }} modules. This task will fail check mode if ondrej repo has not been added yet.
   apt:
-    name: "{{ php_modules }}"
+    name: "{{ _php_modules }}"
     update_cache: yes
     state: present
 
