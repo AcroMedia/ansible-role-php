@@ -31,13 +31,20 @@ Install and configure PHP, typically for use with Drupal sites in Acro Media NGI
 * A list of versions to install.
 * Defaults to `[ {{php_default_version}} ]`.
 
+### For PHP 8.0 and before:
+
+* See [defaults/main.yml](defaults/main.yml) - Up to and including PHP 8.0, the add_modules and default modules list were version-specific variables.
+
+### For PHP 8.1 and later:
+
 #### `php_add_modules`
 * A list of extra apt packages not already included in the default list. See [defaults/main.yml](defaults/main.yml).
+* The modules you specify must be the full name of the apt package to install. (See example playbook below)
 * Defaults to an empty list. `[]`
 
 #### `php_modules`
-* Auto defined and populated by default, based on the combination of `php_versions` and `php_default_module_name_suffixes` (see [defaults/main.yml](defaults/main.yml))
-* If you specify this var in your playbook, you will **completely override the ENTIRE list of ALL modules, for ANY PHP version** that the role installs. E.g. If you have multiple versions of php installed, you'll need to specify all modules for every version yourself.
+* Not defined by default, so the role can define it and populated it, based on the combination of `php_versions` and `php_default_module_name_suffixes` (see [defaults/main.yml](defaults/main.yml))
+* If you define this var in your playbook, your var will **completely override the ENTIRE list of ALL modules, for ANY PHP >= 8.1 version** that the role would normally install. E.g. If you have multiple versions of php installed, you'll need to specify all modules for every version yourself.
 
 
 ## Dependencies

@@ -5,59 +5,8 @@ php_memory_limit: 256M
 php_max_input_vars: 3001
 
 # -------------------------
-# The list of "php_default_module_name_suffixes" will be turned into:
-# [ 'php8.0-common', 'php8.0-bcmath' ] etc, according to the list of `php_versions`.
+# PHP 5.6
 # -------------------------
-php_default_module_name_suffixes:
-    - common
-    - bcmath
-    - curl
-    - fpm
-    - gd
-    - igbinary
-    - mbstring
-    - mysql
-    - pgsql
-    - oauth
-    - opcache
-    - redis
-    - soap
-    - xml
-    - xmlrpc
-    - zip
-
-# -------------------------
-# `php_add_modules` is for the user to append the default list wtih, without
-# having to redefine the whole damn thing.
-# -------------------------
-php_add_modules: []
-
-# -------------------
-# @TODO: Write php_omit_modules to prevent arbitrary modules in the default list from getting installed.
-# -------------------
-
-# -------------------------
-# `php_modules` is intentionally not defined here.
-# If playbook sets this, it will be used directly, and
-# the list of php_default_module_name_suffixes will be ignored.
-# -------------------------
-# php_modules: []
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-############# DEPRECATED #################
 php56_modules_default:
     - php5.6-common
     - php5.6-bcmath
@@ -78,7 +27,9 @@ php56_modules_default:
 php56_add_modules: []
 php56_modules: "{{ php56_modules_default + php56_add_modules }}"
 
-############# DEPRECATED #################
+# -------------------------
+# PHP 7.0
+# -------------------------
 php70_modules_default:
     - php7.0-common
     - php7.0-bcmath
@@ -100,7 +51,9 @@ php70_modules_default:
 php70_add_modules: []
 php70_modules: "{{ php70_modules_default + php70_add_modules }}"
 
-############# DEPRECATED #################
+# -------------------------
+# PHP 7.1
+# -------------------------
 php71_modules_default:
     - php7.1-common
     - php7.1-bcmath
@@ -122,7 +75,9 @@ php71_modules_default:
 php71_add_modules: []
 php71_modules: "{{ php71_modules_default + php71_add_modules }}"
 
-############# DEPRECATED #################
+# -------------------------
+# PHP 7.2
+# -------------------------
 php72_modules_default:
     - php7.2-common
     - php7.2-bcmath
@@ -144,7 +99,9 @@ php72_modules_default:
 php72_add_modules: []
 php72_modules: "{{ php72_modules_default + php72_add_modules }}"
 
-############# DEPRECATED #################
+# -------------------------
+# PHP 7.3
+# -------------------------
 php73_modules_default:
     - php7.3-common
     - php7.3-bcmath
@@ -165,7 +122,9 @@ php73_modules_default:
 php73_add_modules: []
 php73_modules: "{{ php73_modules_default + php73_add_modules }}"
 
-############# DEPRECATED #################
+# -------------------------
+# PHP 7.4
+# -------------------------
 php74_modules_default:
     - php7.4-common
     - php7.4-bcmath
@@ -186,7 +145,9 @@ php74_modules_default:
 php74_add_modules: []
 php74_modules: "{{ php74_modules_default + php74_add_modules }}"
 
-############# DEPRECATED #################
+# -------------------------
+# PHP 8.0
+# -------------------------
 php80_modules_default:
     - php8.0-common
     - php8.0-bcmath
@@ -206,3 +167,39 @@ php80_modules_default:
     - php8.0-zip
 php80_add_modules: []
 php80_modules: "{{ php80_modules_default + php80_add_modules }}"
+
+
+# -------------------------
+# PHP >= 8.1
+#
+# The list of "php_default_module_name_suffixes" will be turned into:
+# [ 'php8.1-common', 'php8.1-bcmath', ...etc ]
+# according to the list of `php_versions`.
+#
+# The `php_add_modules` list is so the user to append the default list wtih, without having to redefine the whole list.
+# Modules specified in php_add_modules
+#
+# @TODO: Write php_omit_modules to prevent arbitrary modules in the default list from getting installed.
+#
+# The `php_modules` list is intentionally not defined here. If your playbook sets this, the role will
+# not generate a list of modules to install; the list of php_default_module_name_suffixes will be ignored.
+# -------------------------
+php_default_module_name_suffixes:
+    - common
+    - bcmath
+    - curl
+    - fpm
+    - gd
+    - igbinary
+    - mbstring
+    - mysql
+    - pgsql
+    - oauth
+    - opcache
+    - redis
+    - soap
+    - xml
+    - xmlrpc
+    - zip
+php_add_modules: []
+## php_modules: []  # Intentionally commented out.
