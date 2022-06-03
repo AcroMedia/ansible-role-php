@@ -1,7 +1,63 @@
-php_default_version: 8.0
+php_default_version: 8.1
+php_versions:
+  - "{{ php_default_version }}"
 php_memory_limit: 256M
 php_max_input_vars: 3001
 
+# -------------------------
+# The list of "php_default_module_name_suffixes" will be turned into:
+# [ 'php8.0-common', 'php8.0-bcmath' ] etc, according to the list of `php_versions`.
+# -------------------------
+php_default_module_name_suffixes:
+    - common
+    - bcmath
+    - curl
+    - fpm
+    - gd
+    - igbinary
+    - mbstring
+    - mysql
+    - pgsql
+    - oauth
+    - opcache
+    - redis
+    - soap
+    - xml
+    - xmlrpc
+    - zip
+
+# -------------------------
+# `php_add_modules` is for the user to append the default list wtih, without
+# having to redefine the whole damn thing.
+# -------------------------
+php_add_modules: []
+
+# -------------------
+# @TODO: Write php_omit_modules to prevent arbitrary modules in the default list from getting installed.
+# -------------------
+
+# -------------------------
+# `php_modules` is intentionally not defined here.
+# If playbook sets this, it will be used directly, and
+# the list of php_default_module_name_suffixes will be ignored.
+# -------------------------
+# php_modules: []
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+############# DEPRECATED #################
 php56_modules_default:
     - php5.6-common
     - php5.6-bcmath
@@ -22,6 +78,7 @@ php56_modules_default:
 php56_add_modules: []
 php56_modules: "{{ php56_modules_default + php56_add_modules }}"
 
+############# DEPRECATED #################
 php70_modules_default:
     - php7.0-common
     - php7.0-bcmath
@@ -43,6 +100,7 @@ php70_modules_default:
 php70_add_modules: []
 php70_modules: "{{ php70_modules_default + php70_add_modules }}"
 
+############# DEPRECATED #################
 php71_modules_default:
     - php7.1-common
     - php7.1-bcmath
@@ -64,6 +122,7 @@ php71_modules_default:
 php71_add_modules: []
 php71_modules: "{{ php71_modules_default + php71_add_modules }}"
 
+############# DEPRECATED #################
 php72_modules_default:
     - php7.2-common
     - php7.2-bcmath
@@ -85,6 +144,7 @@ php72_modules_default:
 php72_add_modules: []
 php72_modules: "{{ php72_modules_default + php72_add_modules }}"
 
+############# DEPRECATED #################
 php73_modules_default:
     - php7.3-common
     - php7.3-bcmath
@@ -105,6 +165,7 @@ php73_modules_default:
 php73_add_modules: []
 php73_modules: "{{ php73_modules_default + php73_add_modules }}"
 
+############# DEPRECATED #################
 php74_modules_default:
     - php7.4-common
     - php7.4-bcmath
@@ -125,6 +186,7 @@ php74_modules_default:
 php74_add_modules: []
 php74_modules: "{{ php74_modules_default + php74_add_modules }}"
 
+############# DEPRECATED #################
 php80_modules_default:
     - php8.0-common
     - php8.0-bcmath

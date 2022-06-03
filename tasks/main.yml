@@ -22,10 +22,22 @@
     repo: "ppa:ondrej/php"
     update_cache: yes
 
-- name: Include php version specific playbook
+- name: Debug php_versions
+  debug:
+    var: php_versions
+#    verbosity: 1
+
+- name: Include php version specific playbook (< 8.1)
   include_tasks: "php{{ item }}.yml"
+  when: item is version(8.1, '<')
   with_items: "{{ php_versions }}"
-  when: php_versions is defined
+
+- name: Include php version agnostic playbook (>= 8.1)
+  include_tasks: "php_any.yml"
+  vars:
+    php_version: "{{ item }}"
+  when: item is version(8.1, '>=')
+  with_items: "{{ php_versions }}"
 
 - name: Check for existence of /etc/acro/add-website.conf
   stat: path=/etc/acro/add-website.conf.php{{ php_default_version }}
@@ -47,58 +59,30 @@
 - name: Determine the current default PHP CLI version
   shell: |
     set -o pipefail
-    /usr/bin/php -v | grep 'PHP '
+    /usr/bin/php -v | grep '^PHP '
   args:
     executable: /bin/bash
   register: php_installed_default_version
   failed_when: false
   changed_when: false
 
-- name: Change default PHP version to 5.6 (PHP CLI)
-  shell: update-alternatives --set php /usr/bin/php{{ php_default_version }}
-  when: php_default_version == 5.6
-    and php_installed_default_version is defined
-    and php_installed_default_version.stdout is defined
-    and (not php_installed_default_version.stdout | regex_search("PHP 5\.6"))
+- name: Debug php_installed_default_version
+  debug:
+    var: php_installed_default_version
+    verbosity: 1
 
-- name: Change default PHP version to 7.0 (PHP CLI)
-  shell: update-alternatives --set php /usr/bin/php{{ php_default_version }}
-  when: php_default_version == 7.0
-    and php_installed_default_version is defined
-    and php_installed_default_version.stdout is defined
-    and (not php_installed_default_version.stdout | regex_search("PHP 7\.0"))
+- name: Debug php_default_version
+  debug:
+    var: php_default_version
+    verbosity: 1
 
-- name: Change default PHP version to 7.1 (PHP CLI)
-  shell: update-alternatives --set php /usr/bin/php{{ php_default_version }}
-  when: php_default_version == 7.1
-    and php_installed_default_version is defined
-    and php_installed_default_version.stdout is defined
-    and (not php_installed_default_version.stdout | regex_search("PHP 7\.1"))
+- name: Debug regex search
+  debug:
+    msg: '{{ php_installed_default_version.stdout | regex_search("PHP " + (php_default_version|string)) }}'
+    verbosity: 1
 
-- name: Change default PHP version to 7.2 (PHP CLI)
+- name: Set default CLI PHP version (PHP CLI) when the running default version does not match the desired default version.
   shell: update-alternatives --set php /usr/bin/php{{ php_default_version }}
-  when: php_default_version == 7.2
-    and php_installed_default_version is defined
+  when: php_installed_default_version is defined
     and php_installed_default_version.stdout is defined
-    and (not php_installed_default_version.stdout | regex_search("PHP 7\.2"))
-
-- name: Change default PHP version to 7.3 (PHP CLI)
-  shell: update-alternatives --set php /usr/bin/php{{ php_default_version }}
-  when: php_default_version == 7.3
-    and php_installed_default_version is defined
-    and php_installed_default_version.stdout is defined
-    and (not php_installed_default_version.stdout | regex_search("PHP 7\.3"))
-
-- name: Change default PHP version to 7.4 (PHP CLI)
-  shell: update-alternatives --set php /usr/bin/php{{ php_default_version }}
-  when: php_default_version == 7.4
-    and php_installed_default_version is defined
-    and php_installed_default_version.stdout is defined
-    and (not php_installed_default_version.stdout | regex_search("PHP 7\.4"))
-
-- name: Change default PHP version to 8.0 (PHP CLI)
-  shell: update-alternatives --set php /usr/bin/php{{ php_default_version }}
-  when: php_default_version == 8.0
-    and php_installed_default_version is defined
-    and php_installed_default_version.stdout is defined
-    and (not php_installed_default_version.stdout | regex_search("PHP 8\.0"))
+    and (not php_installed_default_version.stdout | regex_search("PHP " + (php_default_version|string|regex_escape())))
