@@ -2,7 +2,7 @@
 - name: Install PHP 5.6 modules
 # Note: Some of the package names fail check mode if the Ondrej repo hasn't yet been installed.
   apt:
-    name: "{{ php_56_modules }}"
+    name: "{{ php56_modules }}"
     update_cache: yes
     state: present
 
