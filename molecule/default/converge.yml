@@ -16,8 +16,5 @@
         name: dirmngr
         state: present
 
-    - name: Add repository for PHP
-      apt_repository: repo='ppa:ondrej/php'
-
   roles:
     - role: ansible-role-php
