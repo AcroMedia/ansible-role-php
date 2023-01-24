@@ -23,9 +23,9 @@ provisioner:
     ANSIBLE_FORCE_COLOR: '1'
 verifier:
   name: ansible
-  env:
-    ANSIBLE_VERBOSITY: ${MOLECULE_ANSIBLE_VERBOSITY:-0}
-    PY_COLORS: '1'
-    ANSIBLE_FORCE_COLOR: '1'
+#  env:
+#    ANSIBLE_VERBOSITY: ${MOLECULE_ANSIBLE_VERBOSITY:-0}
+#    PY_COLORS: '1'
+#    ANSIBLE_FORCE_COLOR: '1'
 scenario:
   name: php7.4
