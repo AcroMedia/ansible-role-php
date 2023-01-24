@@ -32,9 +32,8 @@ jobs:
           - default   # aka php81modern. Only uses 8.1 style lists for all php versions.
           - php81legacy  # Mixes new 8.1 style list and keeps pre-8.1 module lists.
         image:
-          - geerlingguy/docker-ubuntu2204-ansible:latest
-          - geerlingguy/docker-ubuntu2004-ansible:latest
-          - geerlingguy/docker-ubuntu1804-ansible:latest
+          - registry.gitlab.com/aussielunix/ansible/molecule-containers/ubuntu:jammy
+          - registry.gitlab.com/aussielunix/ansible/molecule-containers/ubuntu:focal
     steps:
       - name: checkout
         uses: actions/checkout@v3
