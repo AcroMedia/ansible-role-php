@@ -28,4 +28,4 @@ verifier:
     PY_COLORS: '1'
     ANSIBLE_FORCE_COLOR: '1'
 scenario:
-  name: default
+  name: php81legacy
