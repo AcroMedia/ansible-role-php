@@ -13,11 +13,11 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: checkout
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
         with:
           path: "${{ github.repository }}"
       - name: molecule
-        uses: robertdebock/molecule-action@2.6.3
+        uses: robertdebock/molecule-action@4.0.9
         with:
           command: lint
   test:
@@ -29,19 +29,18 @@ jobs:
         scenario:
           - php7.4
           - php8.0
-          - default   # aka php81modern. Only uses 8.1 style lists for all php versions.
+          - default   # PHP 8.1 and beyond. Only uses 8.1 style lists for all php versions.
           - php81legacy  # Mixes new 8.1 style list and keeps pre-8.1 module lists.
         image:
-          - geerlingguy/docker-ubuntu2204-ansible:latest
-          - geerlingguy/docker-ubuntu2004-ansible:latest
-          - geerlingguy/docker-ubuntu1804-ansible:latest
+          - registry.gitlab.com/aussielunix/ansible/molecule-containers/ubuntu:jammy
+          - registry.gitlab.com/aussielunix/ansible/molecule-containers/ubuntu:focal
     steps:
       - name: checkout
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
         with:
           path: "${{ github.repository }}"
       - name: molecule
-        uses: robertdebock/molecule-action@2.6.3
+        uses: robertdebock/molecule-action@4.0.9
         with:
           options: parallel
           scenario: "${{ matrix.scenario }}"

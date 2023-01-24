@@ -1,25 +1,31 @@
 ---
+role_name_check: 1
 dependency:
   name: galaxy
 driver:
   name: docker
 platforms:
   - name: instance
-    image: ${MOLECULE_DOCKER_IMAGE:-'geerlingguy/docker-ubuntu1804-ansible:latest'}
-    # command: ${MOLECULE_DOCKER_COMMAND:-""}
-    volumes:
-      - /sys/fs/cgroup:/sys/fs/cgroup:ro
+    image: "registry.gitlab.com/aussielunix/ansible/molecule-containers/${MOLECULE_DISTRO:-ubuntu:jammy}"
     privileged: true
     pre_build_image: true
+    override_command: false
+    tmpfs:
+      - /run
+      - /tmp
 provisioner:
   name: ansible
   playbooks:
     converge: ${MOLECULE_PLAYBOOK:-converge.yml}
+  env:
+    ANSIBLE_VERBOSITY: ${MOLECULE_ANSIBLE_VERBOSITY:-0}
+    PY_COLORS: '1'
+    ANSIBLE_FORCE_COLOR: '1'
 verifier:
   name: ansible
-lint: |
-  set -e
-  yamllint -d relaxed .
-#  ansible-lint .   @TODO uncomment and address issues, which are out of scope for this feature branch.
+#  env:
+#    ANSIBLE_VERBOSITY: ${MOLECULE_ANSIBLE_VERBOSITY:-0}
+#    PY_COLORS: '1'
+#    ANSIBLE_FORCE_COLOR: '1'
 scenario:
   name: php8.0
