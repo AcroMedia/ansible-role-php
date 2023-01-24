@@ -17,10 +17,15 @@
     name: dirmngr
     state: present
 
+- name: Debug ansible_distribution_release
+  debug:
+    var: ansible_distribution_release
+
 - name: Add ondrej repo to allow multiple PHP versions
   apt_repository:
     repo: "ppa:ondrej/php"
     update_cache: yes
+    codename: "{{ ansible_distribution_release }}"
 
 - name: Debug php_versions
   debug:
