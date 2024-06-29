@@ -14,7 +14,7 @@ Install and configure PHP, typically for use with Drupal sites in Acro Media NGI
 
 #### `php_default_version`
   * The default CLI version of php to set on the server.
-  * Defaults to `8.1`
+  * Defaults to `8.3`
 
 #### `php_memory_limit`
 * The default maximum memory limit
