@@ -1,4 +1,4 @@
-php_default_version: 8.1
+php_default_version: 8.3
 php_versions:
   - "{{ php_default_version }}"
 php_memory_limit: 256M

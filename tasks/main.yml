@@ -1,7 +1,8 @@
 ---
 - set_fact:
     _supported_ubuntu_versions:
-      - '18.04'
+      # - '16.04'  # No php 8.1 support.
+      # - '18.04'  # No php 8.1 support.
       - '20.04'
       - '22.04'
       - '24.04'
@@ -22,11 +23,41 @@
   debug:
     var: ansible_distribution_release
 
-- name: Add ondrej repo to allow multiple PHP versions
+- name: Add ondrej repo to allow multiple PHP versions (except ubuntu 24.04)
   apt_repository:
     repo: "ppa:ondrej/php"
     update_cache: yes
     codename: "{{ ansible_distribution_release }}"
+  when: ansible_distribution_version != '24.04'
+
+- name: Apply jenky workaround for ubuntu 24.04. See https://github.com/oerdnj/deb.sury.org/issues/1429
+  when: ansible_distribution_version == '24.04'
+  block:
+    - set_fact:
+        _gpgkey: 'B8DC7E53946656EFBCE4C1DD71DAEAAB4AD4CAB6'
+        _gpgkeypath: '/etc/apt/keyrings/ondrej-ubuntu-php-2404.asc'
+    - set_fact:
+        gpgurl: "https://keyserver.ubuntu.com/pks/lookup?op=get&search=0x{{ _gpgkey }}"
+    - name: Download the GPG key
+      get_url:
+        url: "{{ gpgurl }}"
+        dest: "{{ _gpgkeypath }}"
+    - name: Create the sources file
+      copy:
+        content: |
+          X-Repolib-Name: Ondrej PHP
+          Types: deb
+          URIs: https://ppa.launchpadcontent.net/ondrej/php/ubuntu
+          Suites: noble
+          Components: main
+          Signed-By: /etc/apt/keyrings/ondrej-ubuntu-php-2404.asc
+        dest: /etc/apt/sources.list.d/ondrej-ubuntu-php-2404.sources
+        force: true
+      register: manual_php_2404_sources_file_result
+    - name: Update apt cache
+      apt:
+        update_cache: yes
+      when: manual_php_2404_sources_file_result.changed
 
 - name: Debug php_versions
   debug:

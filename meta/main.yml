@@ -11,10 +11,10 @@ galaxy_info:
   platforms:
   - name: Ubuntu
     versions:
-    - xenial
-    - bionic
-    - focal
-    - jammy
-    - noble
+      #- xenial # No php 8.1 support
+      # - bionic # No php 8.1 support
+      - focal
+      - jammy
+      - noble
   galaxy_tags: []
 dependencies: []
