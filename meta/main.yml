@@ -11,7 +11,7 @@ galaxy_info:
   platforms:
   - name: Ubuntu
     versions:
-      - xenial
+      #- xenial # No php 8.1 support
       - bionic
       - focal
       - jammy

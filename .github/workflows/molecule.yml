@@ -40,7 +40,7 @@ jobs:
           - geerlingguy/docker-ubuntu2204-ansible:latest
           - geerlingguy/docker-ubuntu2004-ansible:latest
           - geerlingguy/docker-ubuntu1804-ansible:latest
-          - geerlingguy/docker-ubuntu1604-ansible:latest
+          #- geerlingguy/docker-ubuntu1604-ansible:latest # PHP 8.1 is not available.
     steps:
       - name: checkout
         uses: actions/checkout@v3
