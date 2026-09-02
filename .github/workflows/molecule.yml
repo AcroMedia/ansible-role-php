@@ -1,6 +1,6 @@
 ---
-on:
- # Trigger the workflow on push or pull request,
+'on':
+  # Trigger the workflow on push or pull request,
   # but only for the main branch
   push:
     branches:
@@ -17,13 +17,9 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: checkout
-        uses: actions/checkout@v3
-        with:
-          path: "${{ github.repository }}"
-      - name: molecule
-        uses: robertdebock/molecule-action@4.0.9
-        with:
-          command: lint
+        uses: actions/checkout@v4
+      - name: Run ansible-lint
+        uses: ansible/ansible-lint@main
   test:
     needs:
       - lint
@@ -33,8 +29,10 @@ jobs:
         scenario:
           - php7.4
           - php8.0
-          - default   # PHP 8.1 and beyond. Only uses 8.1 style lists for all php versions.
-          - php81legacy  # Mixes new 8.1 style list and keeps pre-8.1 module lists.
+          # PHP 8.1 and beyond; uses 8.1-style lists for all PHP versions.
+          - default
+          # Mixes new 8.1-style lists with pre-8.1 module lists.
+          - php81legacy
         image:
           - geerlingguy/docker-ubuntu2604-ansible:latest
           - geerlingguy/docker-ubuntu2404-ansible:latest
