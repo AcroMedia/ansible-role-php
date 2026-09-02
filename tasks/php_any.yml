@@ -3,6 +3,13 @@
   set_fact:
     php_module_name_prefix: "{{ 'php' + (php_version|string) + '-' }}"
 
+- name: Set PHP module suffixes available for this PHP version.
+  set_fact:
+    __php_module_name_suffixes: >-
+      {{ php_default_module_name_suffixes | reject('equalto', 'opcache') | list
+         if (php_version | string) is version('8.5', '>=')
+         else php_default_module_name_suffixes }}
+
 - name: Debug php_default_module_name_suffixes
   debug:
     var: php_default_module_name_suffixes
@@ -15,7 +22,7 @@
 
 - name: Set php_modules_default list
   set_fact:
-    php_modules_default: "{{ [php_module_name_prefix] | product(php_default_module_name_suffixes|list) | map('join') | list  }}"
+    php_modules_default: "{{ [php_module_name_prefix] | product(__php_module_name_suffixes | list) | map('join') | list }}"
 
 - name: Debug php_modules_default
   debug:
