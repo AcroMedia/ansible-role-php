@@ -13,40 +13,40 @@
     paths-ignore:
       - 'README.md'
 jobs:
-# @TODO: Lint is badly out of date. Needs fixing.
-#  lint:
-#    runs-on: ubuntu-latest
-#    steps:
-#      - name: checkout
-#        uses: actions/checkout@v4
-#      - name: Run ansible-lint
-#        uses: ansible/ansible-lint@main
+  # @TODO: Lint is badly out of date. Needs fixing.
+  # lint:
+  #   runs-on: ubuntu-latest
+  #   steps:
+  #     - name: checkout
+  #       uses: actions/checkout@v4
+  #     - name: Run ansible-lint
+  #       uses: ansible/ansible-lint@main
   test:
-#    needs:
-#      - lint
+    # needs:
+    #   - lint
     runs-on: ubuntu-latest
     strategy:
+      fail-fast: false
       matrix:
-        scenario:
-          - php7.4
-          - php8.0
-          # PHP 8.1 and beyond; uses 8.1-style lists for all PHP versions.
-          - default
-          # Mixes new 8.1-style lists with pre-8.1 module lists.
-          - php81legacy
         image:
           - geerlingguy/docker-ubuntu2604-ansible:latest
           - geerlingguy/docker-ubuntu2404-ansible:latest
           - geerlingguy/docker-ubuntu2204-ansible:latest
+        php_version:
+          - '8.2'
+          - '8.3'
+          - '8.4'
+          - '8.5'
     steps:
       - name: checkout
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
         with:
           path: "${{ github.repository }}"
       - name: molecule
         uses: robertdebock/molecule-action@6.0.1
         with:
           options: parallel
-          scenario: "${{ matrix.scenario }}"
+          scenario: default
         env:
           MOLECULE_DOCKER_IMAGE: "${{ matrix.image }}"
+          MOLECULE_PHP_VERSION: "${{ matrix.php_version }}"
