@@ -37,6 +37,12 @@ Install and configure PHP, typically for use with Drupal sites in Acro Media NGI
 
 ### For PHP 8.1 and later:
 
+PHP 8.5 makes OPcache a required part of PHP rather than a separately
+installable extension. The role therefore removes `opcache` from
+`php_default_module_name_suffixes` when generating the package list for PHP
+8.5 and newer. This prevents it from requesting the nonexistent
+`php8.5-opcache` package; OPcache remains available as part of PHP itself.
+
 #### `php_add_modules`
 * A list of extra apt packages not already included in the default list. See [defaults/main.yml](defaults/main.yml).
 * The modules you specify must be the full name of the apt package to install. (See example playbook below)

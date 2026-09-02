@@ -1,7 +1,6 @@
 ---
-php_default_version: 8.3
+php_default_version: >-
+  {{ lookup('env', 'MOLECULE_PHP_VERSION') | default('8.3', true) }}
 php_versions:
-  - 8.1
-  - 8.2
-  - 8.3
-php_use_legacy_module_lists: false   # Don't use version-specific module lists; Apply 8.1-style package name list generator to all older PHP versions too.
+  - "{{ php_default_version }}"
+php_use_legacy_module_lists: false
